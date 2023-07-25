@@ -1,7 +1,6 @@
+import joblib
 import scipy.sparse.linalg
-from sklearn import preprocessing
-from sklearn import svm
-from sklearn.externals import joblib
+from sklearn import preprocessing, svm
 
 
 class Classifier:

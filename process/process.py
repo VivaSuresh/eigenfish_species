@@ -1,5 +1,4 @@
-from .math import rpca
-from .math import fft2_series
+from .math import fft2_series, rpca
 
 
 class Processor:

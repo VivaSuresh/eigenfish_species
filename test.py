@@ -1,10 +1,12 @@
-import numpy
 import os
 import shutil
 import unittest
+
+import numpy
+
+from classify.classify import *
 from eigenfish import *
 from process.process import *
-from classify.classify import *
 from util import *
 
 

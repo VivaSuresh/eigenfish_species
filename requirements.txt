@@ -1,5 +1,6 @@
 numpy
+opencv-python
 scipy
-sklearn
+scikit-learn
 imageio
 sphinx
