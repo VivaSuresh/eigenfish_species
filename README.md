@@ -1,5 +1,10 @@
+# Eigenfish_Species
+Eigenfish_Species is a Python 3 package for identifying fish species.
+The skeleton code for eigenfish_species comes from Eigenfish.
+
 # Eigenfish
-Eigenfish is a Python 3 package for detecting fish in an image sequence.
+Eigenfish is a Python 3 package for detecting fish in an image sequence. 
+Eigenfish is copyrighted under the MIT license by Seth Pendergrass, Zhe Bai and Steven Brunton.
 
 ## Requirements
 Requires *Python 3*.
