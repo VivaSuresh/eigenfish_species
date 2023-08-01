@@ -1,6 +1,8 @@
 import joblib
 import scipy.sparse.linalg
 from sklearn import preprocessing, svm
+from typing import List
+import numpy as np
 
 
 class Classifier:
@@ -13,7 +15,7 @@ class Classifier:
         self.use_pca = False
         self.rank = 1
 
-    def train(self, data, labels):
+    def train(self, data: np.ndarray, labels: List[str]):
         """
         Trains current classifier with matrix data and labels, where labels[i]
         describes data[:, i].
