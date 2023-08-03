@@ -59,7 +59,13 @@ def display_img(img: np.ndarray, add_noise=False, normalize=False):
     """    
 
     if normalize:
-        cv2.normalize(img, None, 0, 255)
+        min_val = np.amin(img)
+        img -= min_val
+
+        max_val = np.amax(img)
+        scale_factor = 255/max_val
+        img *= scale_factor
+
 
     if add_noise:
 
@@ -70,9 +76,7 @@ def display_img(img: np.ndarray, add_noise=False, normalize=False):
         noisy_img[noisy_img>255] = 255
         img = noisy_img.astype(np.uint8)
 
-    else:
-
-        img = img.astype(np.uint8)
+    img = img.astype(np.uint8)
     
     cv2.namedWindow("img", cv2.WINDOW_NORMAL)
     cv2.imshow("img", img)

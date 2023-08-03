@@ -3,14 +3,15 @@ import math
 import numpy as np
 import scipy.sparse.linalg
 from typing import Tuple
+from sklearn.decomposition import PCA
 
 from tqdm import tqdm
 
-def rpca(image_mat: np.ndarray):
+def rpca(image_mat: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """
     Performs Robust Principle Component Analysis on image_mat.
-
-    :returns: Low-rank, sparse parts of image_mat
+    :param image_mat: The 2d flattened image matrix
+    :returns: sparse parts, low rank matrices of image_mat in that order
     """
 
     print(f"Beginning Robust PCA on matrix of size {image_mat.shape}.")
@@ -53,8 +54,43 @@ def rpca(image_mat: np.ndarray):
 
     return a_hat, e_hat
 
+def pca(image_mat: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Performs Principle Component Analysis on image_mat.
+    :param image_mat: The 2d flattened image matrix. Each column represents a different instance. 
+    :param k: The number of principal components desired
+    :returns: pca matrix, mean of rows
+    """
+    
+    # Standardize the data row-wise. This finds the average of each feature (pixel of the image) and std
 
-def fft2_series(img_mat: np.ndarray, shape: Tuple[int, int]):
+    mean = image_mat.mean(axis=1)
+    print(mean.shape)
+    std =  image_mat.std(axis=1)
+    standardized = np.empty(image_mat.shape)
+
+    print("Beginning PCA standardization")
+    for i in range(image_mat.shape[1]):
+
+        standardized[:,i] = (image_mat[:,i] - mean)/std
+    print("PCA standardization complete\n")
+
+    # Get the eigenvalues and eigenvectors using the fast method
+
+    small_matrix = standardized.T @ standardized
+
+    eigenvalues_small, eigenvectors_small = np.linalg.eig(small_matrix)
+    order = np.argsort(eigenvalues_small[::-1])
+    eigenvectors_small_sorted = eigenvectors_small[:,order]
+
+    eigenvectors_sorted = standardized @ eigenvectors_small_sorted
+
+    # Returns the index order of sorting from max eigenvalue to min, for dimensional reduction.
+    
+    return eigenvectors_sorted[:,:k], mean, std
+    
+
+def fft2_series(img_mat: np.ndarray, shape: Tuple[int, int]) -> np.ndarray:
     """
     For each column in img_mat, img_mat[:, i] the fft2 modes are extracted and
     placed into the corresponding column of the returned matrix.

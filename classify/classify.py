@@ -30,7 +30,7 @@ class Classifier:
         else:
             self.svc.fit(preprocessing.scale(data.T), labels)
 
-    def classify(self, data):
+    def classify(self, data: np.ndarray):
         """
         Classifies data based on current model.
 
@@ -44,7 +44,7 @@ class Classifier:
         else:
             return self.svc.predict(preprocessing.scale(data.T))
 
-    def cross_validate(self, data, labels):
+    def cross_validate(self, data: np.ndarray, labels: List[int]):
         """
         Cross-validates trained model against data with labels.
 

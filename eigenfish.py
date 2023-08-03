@@ -3,6 +3,7 @@ from process.process import Processor
 import cv2
 from typing import Tuple, List
 import numpy as np
+from util import display_img
 
 
 class Eigenfish:
@@ -32,8 +33,8 @@ class Eigenfish:
             img_mat[:, i].
         """
 
-        temp = self.processor.process(img_mat, self.shape)
-        self.classifier.train(temp, label_arr)
+        return self.processor.process(img_mat, self.shape)
+        #  
 
     def train_rgb(self, img_mat_rgb: np.ndarray, label_arr: List[str]):
         """
@@ -46,9 +47,20 @@ class Eigenfish:
         print(img_mat_rgb.shape)
         b_mat, g_mat, r_mat = cv2.split(img_mat_rgb)
         
-        self.train(r_mat, label_arr)
-        self.train(g_mat, label_arr)
-        self.train(b_mat, label_arr)
+        r = self.train(r_mat, label_arr)
+        g = self.train(g_mat, label_arr)
+        b = self.train(b_mat, label_arr)
+        
+        for i in range(21):
+
+            b_shaped = np.reshape(b[:,i], self.shape)
+            g_shaped = np.reshape(g[:,i], self.shape)
+            r_shaped = np.reshape(r[:,i], self.shape)
+
+            img_mat_bgr = np.dstack((b_shaped,g_shaped,r_shaped))
+
+            print(np.amax(img_mat_bgr))
+            display_img(img_mat_bgr, normalize=True)
 
 
 
